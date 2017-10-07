@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_action.c 1.3.1.2 2015/03/04 16:15:46EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -270,7 +270,7 @@ void LC_SampleSingleAP(uint16 APNumber)
                     /* 
                     ** Actions go to passive after they've failed 
                     */
-                    LC_OperData.ARTPtr[APNumber].CurrentState = LC_APSTATE_PASSIVE;
+                    //EJB LC_OperData.ARTPtr[APNumber].CurrentState = LC_APSTATE_PASSIVE;
 
                     if (LC_AppData.CurrentLCState == LC_STATE_ACTIVE)
                         {

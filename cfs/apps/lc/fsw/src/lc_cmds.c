@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_cmds.c 1.6 2015/03/04 16:09:55EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -284,12 +284,18 @@ int32 LC_AppPipe(CFE_SB_MsgPtr_t MessagePtr)
     uint16          CommandCode = 0;
 
     MessageID = CFE_SB_GetMsgId(MessagePtr);
+
+    //EJB
+    //printf("\n\nEJB - MessageIs %x\n\n", MessageID);
+    LC_SampleAPs(0, LC_MAX_ACTIONPOINTS - 1);
+
     switch (MessageID)
     {
         /*
         ** Sample actionpoints request
         */
         case LC_SAMPLE_AP_MID:
+
             LC_SampleAPReq(MessagePtr);
             break;
     

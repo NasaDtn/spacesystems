@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_def_wdt.c 1.3 2015/03/04 16:09:49EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -69,6 +69,8 @@
 #include "lc_msgdefs.h"
 #include "lc_tbl.h"
 #include "lc_app.h"
+
+#include "../whe/fsw/platform_inc/whe_msgids.h"
 
 /*************************************************************************
 ** Examples
@@ -137,14 +139,14 @@ LC_WDTEntry_t LC_DefaultWDT[LC_MAX_WATCHPOINTS] =
 {
     /* #0 (unused) */
     {
-        .DataType                   = LC_WATCH_NOT_USED,
-        .OperatorID                 = LC_NO_OPER,
-        .MessageID                  = 0,
-        .WatchpointOffset           = 0,
+        .DataType                   = LC_DATA_BYTE,
+        .OperatorID                 = LC_OPER_GE,
+        .MessageID                  = WHE_HK_TLM_MID,
+        .WatchpointOffset           = 14,
         .BitMask                    = LC_NO_BITMASK,
         .CustomFuncArgument         = 0,
         .ResultAgeWhenStale         = 0,
-        .ComparisonValue.Unsigned32 = 0,
+        .ComparisonValue.Unsigned32 = 3,
     },
 
     /* #1 (unused) */

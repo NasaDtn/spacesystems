@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_app.c 1.1.1.2 2015/03/04 16:15:46EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -320,8 +320,10 @@ void LC_AppMain(void)
        /* 
        ** Pend on the arrival of the next Software Bus message 
        */
+
        Status = CFE_SB_RcvMsg(&LC_OperData.MsgPtr, LC_OperData.CmdPipe, CFE_SB_PEND_FOREVER);
        
+
        /* 
        ** Performance Log, Start
        */
@@ -1175,8 +1177,9 @@ int32 LC_LoadDefaultTables(void)
     /*
     ** Set LC operational state to configured startup value
     */
-    LC_AppData.CurrentLCState = LC_STATE_POWER_ON_RESET;
+    LC_AppData.CurrentLCState = LC_STATE_ACTIVE;
     LC_OperData.TableResults |= LC_APP_DEFAULT_DATA;
+
 
     /*
     ** If CDS is enabled - try to update the 3 CDS areas managed by the LC task

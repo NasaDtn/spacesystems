@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_watch.c 1.5 2015/03/04 16:09:52EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -654,9 +654,11 @@ void LC_CheckMsgForWPs(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
     LC_WatchPtList_t  *WatchPtList;
     boolean            WatchPtFound = FALSE;
     
+
     /* Do nothing if disabled at the application level */
     if (LC_AppData.CurrentLCState != LC_STATE_DISABLED)
     {
+
         /* Use message timestamp - if none, use current time */
         Timestamp = CFE_SB_GetMsgTime(MessagePtr);
         
@@ -871,6 +873,14 @@ uint8 LC_OperatorCompare(uint16 WatchIndex,
         ** Signed integer types will get sign extended
         */
         case LC_DATA_BYTE:
+
+        	//EJB
+//        	if(WatchIndex == 0)
+        	//{
+        		//printf("watch is %d and compare is %d\n", WatchpointValue.Signed8in32.Signed8,
+                  //      ComparisonValue.Signed8in32.Signed8);
+        	//}
+
             EvalResult = LC_SignedCompare(WatchIndex,
                                           WatchpointValue.Signed8in32.Signed8,
                                           ComparisonValue.Signed8in32.Signed8);

@@ -127,6 +127,9 @@ void WHE_AppInit(void)
     WHE_Info.act_cap = CAP_A;
     WHE_Info.dmg_cnt = 0;
     WHE_Info.pwr_cnt = 0;
+    WHE_Info.suc_obs = 0;
+    WHE_Info.obs_cnt = 0;
+
 
 
     CFE_EVS_SendEvent (WHE_EID_INF_STARTUP, CFE_EVS_INFORMATION,
@@ -298,6 +301,8 @@ void WHE_UpdateObs()
 {
 	if(WHE_Info.sbc_state == SBC_OBSERVING)
 	{
+		WHE_Info.temp += .1;
+
 		if(WHE_Info.act_cap == CAP_A)
 		{
 			WHE_Info.cap_a.charge -= 5;
@@ -313,6 +318,22 @@ void WHE_UpdateObs()
 			{
 				WHE_Destroy();
 			}
+		}
+		if(WHE_Info.obs_cnt > 0)
+		{
+			WHE_Info.obs_cnt--;
+		}
+		else
+		{
+			WHE_Info.suc_obs++;
+			WHE_Info.sbc_state = SBC_POWERED;
+		}
+
+		// Bad temp. Abort observation.
+		if(WHE_Info.temp > 15)
+		{
+			WHE_Info.obs_cnt = 0;
+			WHE_Info.sbc_state = SBC_POWERED;
 		}
 	}
 }
@@ -375,10 +396,16 @@ void WHE_UpdateCap(cap_t *cap, cap_t *other_cap)
 {
 	int val;
 
+	if (WHE_Info.sbc_state == SBC_OFF)
+	{
+		return;
+	}
+
 	if(cap->state == CAP_BROKEN)
 	{
 		return;
 	}
+
 	if(WHE_Info.sbc_state == SBC_OBSERVING)
 	{
 	   if(WHE_Info.act_cap == CAP_A)
@@ -479,13 +506,19 @@ void WHE_CapCmd(int cap, int cmd)
 	{
 		if(cap == CAP_A)
 		{
-			WHE_Info.cap_a.dischrg_cnt = 3;
-			WHE_Info.cap_a.state = CAP_DISCHARGING;
+			if(WHE_Info.cap_a.state == CAP_CHARGING)
+			{
+				WHE_Info.cap_a.dischrg_cnt = 3;
+				WHE_Info.cap_a.state = CAP_DISCHARGING;
+			}
 		}
 		else
 		{
-			WHE_Info.cap_b.dischrg_cnt = 3;
-			WHE_Info.cap_b.state = CAP_DISCHARGING;
+			if(WHE_Info.cap_b.state == CAP_CHARGING)
+			{
+				WHE_Info.cap_b.dischrg_cnt = 3;
+				WHE_Info.cap_b.state = CAP_DISCHARGING;
+			}
 		}
 	}
 }
@@ -504,14 +537,19 @@ void WHE_ObsCmd(int cmd)
 
 	if(cmd == OBS_START)
 	{
-		if(WHE_TestSBC() != 0)
+		if(WHE_Info.sbc_state != SBC_OBSERVING)
 		{
-			WHE_Info.sbc_state = SBC_OBSERVING;
+			if(WHE_TestSBC() != 0)
+			{
+				WHE_Info.sbc_state = SBC_OBSERVING;
+				WHE_Info.obs_cnt = 15;
+			}
 		}
 	}
 	else if (WHE_Info.sbc_state == SBC_OBSERVING)
 	{
 		WHE_Info.sbc_state = SBC_POWERED;
+		WHE_Info.obs_cnt = 0;
 	}
 }
 
@@ -533,6 +571,9 @@ int WHE_TestSBC()
 			success = WHE_Info.cap_b.charge > (15 * 5);
 		}
 	}
+
+	success = success && (WHE_Info.temp <= 15) && (WHE_Info.temp > 0);
+
 	return success;
 }
 
@@ -575,6 +616,19 @@ void WHE_ReportHousekeeping(void)
 	WHE_HkTelemetryPkt.whe_htr = WHE_Info.htr;
 	WHE_HkTelemetryPkt.whe_act_cap = WHE_Info.act_cap;
 	WHE_HkTelemetryPkt.whe_dmg_state = WHE_Info.instr_dmg;
+
+
+/*    WHE_HkTelemetryPkt.whe_cap_a_charge = 1;
+    WHE_HkTelemetryPkt.whe_cap_a_state = 2;
+    WHE_HkTelemetryPkt.whe_cap_b_charge = 3;
+    WHE_HkTelemetryPkt.whe_cap_b_state = 4;
+    WHE_HkTelemetryPkt.whe_sbc_state = 5;
+    WHE_HkTelemetryPkt.whe_temp = (int8) 6;
+    WHE_HkTelemetryPkt.whe_louver = 7;
+    WHE_HkTelemetryPkt.whe_htr = 8;
+    WHE_HkTelemetryPkt.whe_act_cap = 9;
+    WHE_HkTelemetryPkt.whe_dmg_state = 10;
+*/
 
 	CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &WHE_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &WHE_HkTelemetryPkt);

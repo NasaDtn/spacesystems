@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_custom.c 1.2 2015/03/04 16:09:52EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -39,6 +39,7 @@
 #include "lc_events.h"
 #include "lc_mission_cfg.h"
 
+#include "../../../whe/fsw/platform_inc/whe_msgids.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Initiate an RTS request                                         */
@@ -70,12 +71,12 @@ void LC_ExecuteRTS(uint16 RTSId)
     /**************************************************************/
     
     CFE_SB_InitMsg((CFE_SB_Msg_t *) ((uint32) &RTSRequest),
-            LC_RTS_REQ_MID, sizeof(LC_RTSRequest_t), TRUE);
+    		WHE_CMD_MID, sizeof(LC_RTSRequest_t), TRUE);
 
     CFE_SB_SetCmdCode((CFE_SB_Msg_t *) ((uint32) &RTSRequest), 
-                                               LC_RTS_REQ_CC);
+                                               RTSId);
         
-    RTSRequest.RTSId = RTSId;
+    //RTSRequest.RTSId = RTSId;
         
     CFE_SB_SendMsg((CFE_SB_Msg_t *) ((uint32) &RTSRequest));
     

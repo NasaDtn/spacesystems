@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_def_adt.c 1.2 2015/03/04 16:09:53EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -79,6 +79,7 @@
 #include "lc_app.h"
 #include "lc_events.h"
 
+#include "../whe/fsw/src/whe_msg.h"
 /*************************************************************************
 ** Examples
 ** (note that comment delimiters have been changed to '**')
@@ -236,15 +237,15 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
 
     /* #1 (unused) */
     {
-        .DefaultState        = LC_ACTION_NOT_USED,
+        .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
+        .RTSId               = WHE_CAP_A_DISCHARGE_CC,
+        .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
+        .EventID             = 1001,
+        .EventText           = { "Discharge Capacitor A" },
         .RPNEquation         = { /* (WP_0) */
                                  0,
                                  LC_RPN_EQUAL

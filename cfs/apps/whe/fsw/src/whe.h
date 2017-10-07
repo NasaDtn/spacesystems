@@ -81,6 +81,8 @@ typedef struct
 	int act_cap;
 	int dmg_cnt;
 	int pwr_cnt;
+	int suc_obs;
+	int obs_cnt;
 } whe_t;
 
 /****************************************************************************/

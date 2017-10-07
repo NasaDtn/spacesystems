@@ -2,7 +2,7 @@
 ** File:
 **   $Id: lc_platform_cfg.h 1.2 2015/03/04 16:09:54EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -131,7 +131,7 @@
 **       #LC_STATE_PASSIVE
 **       #LC_STATE_DISABLED
 */
-#define LC_STATE_POWER_ON_RESET        LC_STATE_DISABLED
+#define LC_STATE_POWER_ON_RESET        LC_STATE_ACTIVE
 
 /** \lccfg Save data to CDS compiler switch
 **  
