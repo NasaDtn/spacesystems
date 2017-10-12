@@ -137,7 +137,7 @@ static CFE_TBL_FileDef_t CFE_TBL_FileDef __attribute__((__used__)) =
 */
 LC_WDTEntry_t LC_DefaultWDT[LC_MAX_WATCHPOINTS] =
 {
-    /* #0 (unused) */
+    /* #0 WHE Example */
     {
         .DataType                   = LC_DATA_BYTE,
         .OperatorID                 = LC_OPER_GE,
