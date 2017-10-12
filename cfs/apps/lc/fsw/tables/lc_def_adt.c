@@ -235,7 +235,7 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
                                }
     },
 
-    /* #1 (unused) */
+    /* #1 WHE Discharge Capacitor A */
     {
         .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
