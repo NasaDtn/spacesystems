@@ -419,7 +419,7 @@ void WHE_UpdateCap(cap_t *cap, cap_t *other_cap)
 			   WHE_Destroy();
 		   }
 	   }
-	   WHE_Info.temp += 1;
+	   WHE_Info.temp += .5;
 	}
 
 	val = rand() % 100;
