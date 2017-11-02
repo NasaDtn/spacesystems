@@ -76,7 +76,10 @@ typedef struct
     uint8			   whe_htr;
     uint8			   whe_act_cap;
     uint8			   whe_dmg_state;
-    uint8              spare[2];
+    uint8                          whe_dmg_cnt;
+    uint8                          whe_obs_cnt;
+    uint8                          whe_suc_obs;
+//    uint8              spare[2];
 
 }   OS_PACK whe_hk_tlm_t  ;
 

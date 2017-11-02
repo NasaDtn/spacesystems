@@ -230,8 +230,7 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
         .EventID             = 0,
         .EventText           = { " " },
         .RPNEquation         = { /* (WP_0) */
-                                 0,
-                                 LC_RPN_EQUAL
+                                 0,3,LC_RPN_EQUAL
                                }
     },
 
@@ -247,7 +246,7 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
         .EventID             = 1001,
         .EventText           = { "Discharge Capacitor A" },
         .RPNEquation         = { /* (WP_0) */
-                                 0,
+                                 0,3,LC_RPN_AND,
                                  LC_RPN_EQUAL
                                }
     },
@@ -259,68 +258,17 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
         .RTSId               = WHE_CAP_B_DISCHARGE_CC,
-        .MaxFailsBeforeRTS   = 1,
+        .MaxFailsBeforeRTS   = 4,
         .EventType           = CFE_EVS_INFORMATION,
         .EventID             = 1002,
-        .EventText           = { "Discharge Capacitor B" },
-        .RPNEquation         = { /* (WP_1) */
-                                 1,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #3 Turn on Heater if too cold. */
-    {
-        .DefaultState        = LC_ACTION_NOT_USED,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = WHE_THERM_HTR_ON_CC,
-        .MaxFailsBeforeRTS   = 1,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 1003,
-        .EventText           = { "Turning Heater On" },
+        .EventText           = { " Discharge Capacitor B" },
         .RPNEquation         = { /* (WP_2) */
-                                 2,
+                                 1,2,LC_RPN_AND,
                                  LC_RPN_EQUAL
                                }
     },
 
-    /* #4 Close Louver if too cold */
-    {
-        .DefaultState        = LC_APSTATE_ACTIVE,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = WHE_THERM_LOUVER_CLOSE_CC,
-        .MaxFailsBeforeRTS   = 1,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 1004,
-        .EventText           = { "Closing Louver" },
-        .RPNEquation         = { /* (WP_2) */
-                                 2,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #5 Turn off Heater if Too hot */
-    {
-        .DefaultState        = LC_APSTATE_ACTIVE,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = WHE_THERM_HTR_OFF_CC,
-        .MaxFailsBeforeRTS   = 1,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 1005,
-        .EventText           = { "Turn Heater Off" },
-        .RPNEquation         = { /* (WP_3) */
-                                 3,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #6 Open Louver if Too Hot */
+    /* #3 Open Louvers */
     {
         .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
@@ -329,95 +277,146 @@ LC_ADTEntry_t LC_DefaultADT[LC_MAX_ACTIONPOINTS] =
         .RTSId               = WHE_THERM_LOUVER_OPEN_CC,
         .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1003,
+        .EventText           = { " Louvers Open" },
+        .RPNEquation         = { /* (WP_0) */
+                                 4,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #4 Heat On */
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_THERM_HTR_ON_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1004,
+        .EventText           = { "Heaters On" },
+        .RPNEquation         = { /* (WP_0) */
+                                 5,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #5 Louvers Closed */
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_THERM_LOUVER_CLOSE_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1005,
+        .EventText           = { "LOUVERS CLOSED " },
+        .RPNEquation         = { /* (WP_0) */
+                                 6,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #6 Heaters OFF */
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_THERM_HTR_OFF_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
         .EventID             = 1006,
-        .EventText           = { "Open Louver" },
-        .RPNEquation         = { /* (WP_3) */
-                                 3,
+        .EventText           = { " HEATERS OFF" },
+        .RPNEquation         = { /* (WP_0) */
+                                 7,
                                  LC_RPN_EQUAL
                                }
     },
 
-    /* #7 (unused) */
+    /* #7 Set Cap A Active */
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_CAP_A_ACTIVE_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1007,
+        .EventText           = { "Cap A Active " },
+        .RPNEquation         = { /* (WP_0) */
+                                 8,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #8 Set Cap B Active*/
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_CAP_B_ACTIVE_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1008,
+        .EventText           = { "Cap B Active " },
+        .RPNEquation         = { /* (WP_0) */
+                                 9,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #9 Start Observation */
+    {
+        .DefaultState        = LC_APSTATE_ACTIVE,
+        .MaxPassiveEvents    = 0,
+        .MaxPassFailEvents   = 0,
+        .MaxFailPassEvents   = 0,
+        .RTSId               = WHE_OBS_START_CC,
+        .MaxFailsBeforeRTS   = 1,
+        .EventType           = CFE_EVS_INFORMATION,
+        .EventID             = 1009,
+        .EventText           = { " Starting Observation" },
+        .RPNEquation         = { /* (WP_0) */
+                                 8,9,LC_RPN_OR,
+                                 LC_RPN_EQUAL
+                               }
+    },
+
+    /* #10 Stop Observation A*/
     {
         .DefaultState        = LC_ACTION_NOT_USED,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
+        .RTSId               = WHE_OBS_STOP_CC,
+        .MaxFailsBeforeRTS   = 1,
         .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
+        .EventID             = 1010,
+        .EventText           = { "Stop Observation " },
         .RPNEquation         = { /* (WP_0) */
-                                 0,
+                                 10,8,LC_RPN_AND,
                                  LC_RPN_EQUAL
                                }
     },
 
-    /* #8 (unused) */
+    /* #11 Power Up */
     {
-        .DefaultState        = LC_ACTION_NOT_USED,
+        .DefaultState        = LC_APSTATE_ACTIVE,
         .MaxPassiveEvents    = 0,
         .MaxPassFailEvents   = 0,
         .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
+        .RTSId               = WHE_POWER_SBC_CC,
+        .MaxFailsBeforeRTS   = 5,
         .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
+        .EventID             = 1011,
+        .EventText           = { "Powering Up " },
         .RPNEquation         = { /* (WP_0) */
-                                 0,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #9 (unused) */
-    {
-        .DefaultState        = LC_ACTION_NOT_USED,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
-        .RPNEquation         = { /* (WP_0) */
-                                 0,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #10 (unused) */
-    {
-        .DefaultState        = LC_ACTION_NOT_USED,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
-        .RPNEquation         = { /* (WP_0) */
-                                 0,
-                                 LC_RPN_EQUAL
-                               }
-    },
-
-    /* #11 (unused) */
-    {
-        .DefaultState        = LC_ACTION_NOT_USED,
-        .MaxPassiveEvents    = 0,
-        .MaxPassFailEvents   = 0,
-        .MaxFailPassEvents   = 0,
-        .RTSId               = 0,
-        .MaxFailsBeforeRTS   = 0,
-        .EventType           = CFE_EVS_INFORMATION,
-        .EventID             = 0,
-        .EventText           = { " " },
-        .RPNEquation         = { /* (WP_0) */
-                                 0,
+                                 11,
                                  LC_RPN_EQUAL
                                }
     },

@@ -308,7 +308,7 @@ void WHE_UpdateObs()
 			WHE_Info.cap_a.charge -= 5;
 			if(WHE_Info.cap_a.charge <= 5)
 			{
-				WHE_Destroy();
+				WHE_Damage(); //EJB was destroy
 			}
 		}
 		else
@@ -316,7 +316,7 @@ void WHE_UpdateObs()
 			WHE_Info.cap_b.charge -= 5;
 			if(WHE_Info.cap_b.charge <= 5)
 			{
-				WHE_Destroy();
+				WHE_Damage(); // EJB was destroy
 			}
 		}
 		if(WHE_Info.obs_cnt > 0)
@@ -329,11 +329,10 @@ void WHE_UpdateObs()
 			WHE_Info.sbc_state = SBC_POWERED;
 		}
 
-		// Bad temp. Abort observation.
-		if(WHE_Info.temp > 15)
+		// Dangerous temp. Abort observation.
+		if(WHE_Info.temp > 30)
 		{
-			WHE_Info.obs_cnt = 0;
-			WHE_Info.sbc_state = SBC_POWERED;
+			WHE_Damage();
 		}
 	}
 }
@@ -410,14 +409,14 @@ void WHE_UpdateCap(cap_t *cap, cap_t *other_cap)
 	{
 	   if(WHE_Info.act_cap == CAP_A)
 	   {
-		   if(WHE_Info.cap_a.charge <= 5)
+		/*EJB   if(WHE_Info.cap_a.charge <= 5)
 		   {
 			   WHE_Destroy();
 		   }
 		   else if(WHE_Info.cap_b.charge <= 5)
 		   {
 			   WHE_Destroy();
-		   }
+		   }*/
 	   }
 	   WHE_Info.temp += .5;
 	}
@@ -574,7 +573,8 @@ int WHE_TestSBC()
 
 	success = success && (WHE_Info.temp <= 15) && (WHE_Info.temp > 0);
 
-	return success;
+//	return success;
+return 1;
 }
 
 void WHE_SbcCmd(int cmd)
@@ -616,6 +616,9 @@ void WHE_ReportHousekeeping(void)
 	WHE_HkTelemetryPkt.whe_htr = WHE_Info.htr;
 	WHE_HkTelemetryPkt.whe_act_cap = WHE_Info.act_cap;
 	WHE_HkTelemetryPkt.whe_dmg_state = WHE_Info.instr_dmg;
+	WHE_HkTelemetryPkt.whe_dmg_cnt = WHE_Info.dmg_cnt;
+	WHE_HkTelemetryPkt.whe_obs_cnt = WHE_Info.obs_cnt;
+	WHE_HkTelemetryPkt.whe_suc_obs = WHE_Info.suc_obs;
 
 
 /*    WHE_HkTelemetryPkt.whe_cap_a_charge = 1;
